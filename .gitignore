@@ -13,10 +13,7 @@
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
-[Rr]elease/
 [Rr]eleases/
-x64/
-x86/
 build/
 bld/
 [Oo]bj/
@@ -193,3 +190,4 @@ FakesAssemblies/
 
 # Visual Studio 6 workspace options file
 *.opt
+*.exe.config
