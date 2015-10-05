@@ -51,6 +51,7 @@
     <Compile Include="Prefabs\TextPrefab.cs" />
     <Compile Include="Render\UIRenderer.cs" />
     <Compile Include="Prefabs\Prefab.cs" />
+    <Compile Include="Prefabs\SpritePrefab.cs" />
     <Compile Include="UI\Bindable\Bindable.cs" />
     <Compile Include="UI\Bindable\Binding.cs" />
     <Compile Include="UI\Bindable\IBindable.cs" />
