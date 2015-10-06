@@ -5,22 +5,23 @@ using System.Drawing;
 
 namespace SlimDX.Common
 {
+	/**
+	 * Once set, this object cannot change.
+	 * It is pre-rendered at initialization.
+	 */
 	public class SpritePrefab
 	{
 		#region Public Interface
-		public System.Drawing.Bitmap tileSheetBitmap;
-		public Rectangle tileRect;
-		public Point drawToPosition;
 
-		public SpritePrefab(DeviceContext2D deviceContext2D)
+		public SpritePrefab(DeviceContext2D deviceContext2D,
+		                    System.Drawing.Bitmap tileSheetBitmap,
+		                    Rectangle tileRect,
+		                    Point drawToPosition)
 		{
 			this._device = deviceContext2D;
-		}
-		
-		public void Draw()
-		{
+
 			// Load the texture
-			var bitmapData = this.tileSheetBitmap.LockBits(
+			var bitmapData = tileSheetBitmap.LockBits(
 				tileRect,
 				System.Drawing.Imaging.ImageLockMode.ReadOnly,
 				System.Drawing.Imaging.PixelFormat.Format32bppPArgb
@@ -38,28 +39,36 @@ namespace SlimDX.Common
 			var d2dBitmapProperties = new BitmapProperties();
 			d2dBitmapProperties.PixelFormat = d2dPixelFormat;
 
-			var d2dBitmap = new SlimDX.Direct2D.Bitmap(
+			this._d2dBitmap = new SlimDX.Direct2D.Bitmap(
 				_device.RenderTarget,
 				tileRect.Size,
 				dataStream,
 				bitmapData.Stride,
 				d2dBitmapProperties
 			);
-			this.tileSheetBitmap.UnlockBits(bitmapData);
-
+			tileSheetBitmap.UnlockBits(bitmapData);
+			
+			this._renderRectangle = new Rectangle(
+				drawToPosition,
+				new Size(tileRect.Width, tileRect.Height)
+			);
+		}
+		
+		public void Draw()
+		{
 			// Render to the 2D context
 			_device.RenderTarget.DrawBitmap(
-				d2dBitmap,
-				new Rectangle(
-					this.drawToPosition,
-					new Size(this.tileRect.Width, this.tileRect.Height)
-				)
+				this._d2dBitmap,
+				this._renderRectangle
 			);
 		}
 		#endregion
 
 		#region Implementation Details
 		protected DeviceContext2D _device;
+		public Point _drawToPosition;
+		private  Direct2D.Bitmap _d2dBitmap;
+		private  Rectangle _renderRectangle;
 		#endregion
 	}
 }
