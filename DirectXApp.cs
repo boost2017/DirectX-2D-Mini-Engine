@@ -68,7 +68,8 @@ namespace SlimDX.Common
 		{
 			return new RenderForm(config.WindowTitle)
 			{
-				ClientSize = new Size(config.WindowWidth, config.WindowHeight)
+				ClientSize = new Size(config.WindowWidth, config.WindowHeight),
+				FormBorderStyle = FormBorderStyle.FixedToolWindow
 			};
 		}
 
